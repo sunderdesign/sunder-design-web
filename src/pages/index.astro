@@ -36,16 +36,31 @@
         transition: opacity 0.5s ease;
       }
 
-      /* Bloque tipográfico integrado en el espacio libre de la izquierda */
+      /* Bloque tipográfico adaptable al lado libre */
       .quote-container {
         position: fixed;
         z-index: 2;
         top: 50%;
-        left: 7%;
         transform: translateY(-50%);
-        width: min(440px, 44vw);
-        text-align: left;
+        width: min(460px, 43vw);
         pointer-events: none;
+        padding: 1.5rem 1.75rem;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
+
+      /* Alineación cuando el espacio libre está a la IZQUIERDA */
+      .pos-left.quote-container {
+        left: 6%;
+        right: auto;
+        text-align: left;
+      }
+
+      /* Alineación cuando el espacio libre está a la DERECHA */
+      .pos-right.quote-container {
+        right: 6%;
+        left: auto;
+        text-align: left;
       }
 
       .quote-kicker {
@@ -55,11 +70,11 @@
         text-transform: uppercase;
         letter-spacing: 0.22em;
         margin-bottom: 1rem;
-        opacity: 0.65;
+        opacity: 0.75;
       }
 
       .quote-text {
-        font-size: clamp(1.25rem, 2.3vw, 1.85rem);
+        font-size: clamp(1.25rem, 2.2vw, 1.85rem);
         font-weight: 300;
         line-height: 1.42;
         letter-spacing: -0.01em;
@@ -72,15 +87,24 @@
         font-weight: 500;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        opacity: 0.7;
+        opacity: 0.8;
       }
 
-      /* Pie de página con enlace de contacto */
+      /* Pie de página con enlace de contacto sincronizado con el lado libre */
       .footer-contact {
         position: fixed;
         z-index: 3;
         bottom: 2rem;
-        left: 7%;
+      }
+
+      .pos-left.footer-contact {
+        left: calc(6% + 1.75rem);
+        right: auto;
+      }
+
+      .pos-right.footer-contact {
+        right: calc(6% + 1.75rem);
+        left: auto;
       }
 
       .contact-link {
@@ -89,7 +113,7 @@
         letter-spacing: 0.12em;
         text-decoration: none;
         color: inherit;
-        opacity: 0.75;
+        opacity: 0.8;
         border-bottom: 1px solid currentColor;
         padding-bottom: 3px;
         transition: opacity 0.25s ease;
@@ -99,51 +123,69 @@
         opacity: 1;
       }
 
-      /* Tema claro (texto blanco sobre fondo rojo) */
+      /* Tema claro (texto blanco sobre fondos oscuros, agua, selva, ladrillo, etc.) */
       .theme-light-text {
         color: #ffffff;
-        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.38);
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
       }
 
-      /* Tema oscuro (texto oscuro sobre fondos blanco y papel texturizado) */
+      .theme-light-text.quote-container {
+        background: radial-gradient(circle at center, rgba(10, 10, 12, 0.34) 0%, rgba(10, 10, 12, 0.12) 100%);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+      }
+
+      /* Tema oscuro (texto oscuro sobre fondos claros: blanco, papel, cielo, mármol claro) */
       .theme-dark-text {
-        color: #1c1c1e;
-        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+        color: #18181b;
+        text-shadow: 0 1px 12px rgba(255, 255, 255, 0.85);
+      }
+
+      .theme-dark-text.quote-container {
+        background: radial-gradient(circle at center, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.2) 100%);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
       }
 
       /* Adaptación Responsive: Tablet vertical y Móvil */
       @media (max-width: 820px) {
         .bg-image {
-          background-position: 78% 24%;
+          background-position: var(--bg-pos-mobile, 78% 24%);
         }
 
-        .quote-container {
+        .quote-container,
+        .pos-left.quote-container,
+        .pos-right.quote-container {
           top: auto;
-          bottom: 5.5rem;
+          bottom: 5.2rem;
           left: 50%;
+          right: auto;
           transform: translateX(-50%);
-          width: 86vw;
+          width: 88vw;
           max-width: 480px;
           text-align: center;
-          padding: 1.1rem 1.25rem;
-          border-radius: 12px;
+          padding: 1.15rem 1.3rem;
+          border-radius: 14px;
         }
 
         .theme-light-text.quote-container {
-          background: rgba(20, 0, 0, 0.28);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
+          background: rgba(15, 15, 18, 0.48);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
         }
 
         .theme-dark-text.quote-container {
-          background: rgba(255, 255, 255, 0.45);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
+          background: rgba(255, 255, 255, 0.65);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
         }
 
-        .footer-contact {
+        .footer-contact,
+        .pos-left.footer-contact,
+        .pos-right.footer-contact {
           bottom: 1.6rem;
           left: 50%;
+          right: auto;
           transform: translateX(-50%);
           width: 100%;
           text-align: center;
@@ -165,22 +207,30 @@
     </footer>
 
     <script>
+      // Catálogo completo de los 22 fondos con su lado libre, tema y encuadre
       const fondos = [
-        {
-          src: '/fondo_web_logo_suprimira_under_construction.jpg',
-          theme: 'theme-light-text',
-          bgPos: '70% center'
-        },
-        {
-          src: '/fondo_web_logo_suprimira_under_construction-3.jpg',
-          theme: 'theme-dark-text',
-          bgPos: '78% center'
-        },
-        {
-          src: '/fondo_web_logo_suprimira_under_construction-4.jpg',
-          theme: 'theme-dark-text',
-          bgPos: '76% center'
-        }
+        { src: '/bck_00.jpg',  side: 'left',  theme: 'theme-dark-text',  bgPos: '78% center', bgPosMobile: '82% 25%' },
+        { src: '/bck_01.jpg',  side: 'left',  theme: 'theme-light-text', bgPos: '76% center', bgPosMobile: '80% 25%' },
+        { src: '/bck_02.jpg',  side: 'right', theme: 'theme-dark-text',  bgPos: '24% center', bgPosMobile: '20% 25%' },
+        { src: '/bck_03.jpg',  side: 'left',  theme: 'theme-light-text', bgPos: '74% center', bgPosMobile: '78% 25%' },
+        { src: '/bck_04.jpeg', side: 'left',  theme: 'theme-dark-text',  bgPos: '75% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_05.jpeg', side: 'right', theme: 'theme-light-text', bgPos: '25% center', bgPosMobile: '22% 28%' },
+        { src: '/bck_06.jpeg', side: 'right', theme: 'theme-light-text', bgPos: '24% center', bgPosMobile: '20% 28%' },
+        { src: '/bck_07.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '76% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_08.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '76% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_09.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '74% center', bgPosMobile: '76% 28%' },
+        { src: '/bck_10.jpeg', side: 'left',  theme: 'theme-dark-text',  bgPos: '76% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_11.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '75% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_12.jpeg', side: 'right', theme: 'theme-light-text', bgPos: '26% center', bgPosMobile: '22% 28%' },
+        { src: '/bck_13.jpeg', side: 'right', theme: 'theme-dark-text',  bgPos: '25% center', bgPosMobile: '22% 28%' },
+        { src: '/bck_14.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '76% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_15.jpeg', side: 'right', theme: 'theme-light-text', bgPos: '25% center', bgPosMobile: '22% 28%' },
+        { src: '/bck_16.jpeg', side: 'left',  theme: 'theme-dark-text',  bgPos: '76% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_17.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '78% center', bgPosMobile: '80% 28%' },
+        { src: '/bck_18.jpeg', side: 'right', theme: 'theme-dark-text',  bgPos: '24% center', bgPosMobile: '20% 28%' },
+        { src: '/bck_19.jpeg', side: 'left',  theme: 'theme-light-text', bgPos: '75% center', bgPosMobile: '78% 28%' },
+        { src: '/bck_20.jpeg', side: 'right', theme: 'theme-dark-text',  bgPos: '25% center', bgPosMobile: '22% 28%' },
+        { src: '/bck_21.jpeg', side: 'left',  theme: 'theme-dark-text',  bgPos: '76% center', bgPosMobile: '80% 28%' }
       ];
 
       const aperturas = [
@@ -224,8 +274,15 @@
         };
       }
 
-      // 1. Seleccionar fondo aleatorio y aplicar su tema visual al texto y al correo
-      const elegido = fondos[Math.floor(Math.random() * fondos.length)];
+      // 1. Seleccionar fondo aleatorio sin repetir el inmediatamente anterior (si es posible)
+      const lastIndex = Number(sessionStorage.getItem('sunder_last_bg'));
+      let randomIndex = Math.floor(Math.random() * fondos.length);
+      if (fondos.length > 1 && randomIndex === lastIndex) {
+        randomIndex = (randomIndex + 1) % fondos.length;
+      }
+      sessionStorage.setItem('sunder_last_bg', String(randomIndex));
+
+      const elegido = fondos[randomIndex];
       const bgEl = document.getElementById('bg');
       const containerEl = document.getElementById('quote-container');
       const footerEl = document.getElementById('footer-contact');
@@ -233,8 +290,11 @@
       if (bgEl && containerEl && footerEl) {
         bgEl.style.backgroundImage = `url('${elegido.src}')`;
         bgEl.style.setProperty('--bg-pos', elegido.bgPos);
-        containerEl.classList.add(elegido.theme);
-        footerEl.classList.add(elegido.theme);
+        bgEl.style.setProperty('--bg-pos-mobile', elegido.bgPosMobile);
+
+        const sideClass = elegido.side === 'right' ? 'pos-right' : 'pos-left';
+        containerEl.classList.add(elegido.theme, sideClass);
+        footerEl.classList.add(elegido.theme, sideClass);
       }
 
       // 2. Generar e insertar la frase motivacional aleatoria
